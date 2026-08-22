@@ -1,0 +1,113 @@
+{% extends "crm/base.html" %}
+
+{% block title %}
+{{ deal.name }} - SimpleCRM
+{% endblock %}
+
+{% block content %}
+
+<div class="flex justify-between items-center mb-8">
+
+    <div>
+
+        <h2 class="text-3xl font-bold">
+            {{ deal.name }}
+        </h2>
+
+        <p class="text-gray-500">
+            {{ deal.customer.name }}
+        </p>
+
+    </div>
+
+
+    <div class="flex gap-3">
+
+        <a
+            href="{% url 'deal_edit' deal.pk %}"
+            class="bg-gray-900 text-white px-5 py-3 rounded-lg"
+        >
+            Edit
+        </a>
+
+        <a
+            href="{% url 'deal_delete' deal.pk %}"
+            class="border border-red-300 text-red-600 px-5 py-3 rounded-lg"
+        >
+            Delete
+        </a>
+
+    </div>
+
+</div>
+
+
+<div class="bg-white rounded-xl shadow-sm p-8">
+
+    <div class="grid md:grid-cols-2 gap-8">
+
+        <div>
+
+            <p class="text-sm text-gray-500">
+                Customer
+            </p>
+
+            <a
+                href="{% url 'customer_detail' deal.customer.pk %}"
+                class="font-medium mt-1 inline-block hover:underline"
+            >
+                {{ deal.customer.name }}
+            </a>
+
+        </div>
+
+
+        <div>
+
+            <p class="text-sm text-gray-500">
+                Amount
+            </p>
+
+            <p class="text-2xl font-bold mt-1">
+                ₹{{ deal.amount }}
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <p class="text-sm text-gray-500">
+                Stage
+            </p>
+
+            <p class="font-medium mt-1">
+                {{ deal.get_stage_display }}
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <p class="text-sm text-gray-500">
+                Expected Close
+            </p>
+
+            <p class="font-medium mt-1">
+
+                {% if deal.expected_close_date %}
+                    {{ deal.expected_close_date|date:"d M Y" }}
+                {% else %}
+                    Not specified
+                {% endif %}
+
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

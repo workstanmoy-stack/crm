@@ -1,0 +1,264 @@
+{% extends "crm/base.html" %}
+
+{% block title %}Activities - SimpleCRM{% endblock %}
+
+{% block content %}
+
+<div class="flex justify-between items-center mb-8">
+
+    <div>
+        <h2 class="text-3xl font-bold">
+            Activities
+        </h2>
+
+        <p class="text-gray-500 mt-1">
+            Calls, meetings and follow-ups
+        </p>
+    </div>
+
+    <a
+        href="{% url 'activity_create' %}"
+        class="bg-gray-900 text-white px-5 py-3 rounded-lg"
+    >
+        + Add Activity
+    </a>
+
+</div>
+
+
+<!-- Filters -->
+
+<form method="GET" class="mb-6">
+
+    <div class="flex gap-3">
+
+        <select
+            name="type"
+            class="border rounded-lg px-4 py-3 bg-white"
+        >
+
+            <option value="">
+                All Types
+            </option>
+
+            <option value="call"
+                {% if activity_type == "call" %}selected{% endif %}>
+                Call
+            </option>
+
+            <option value="meeting"
+                {% if activity_type == "meeting" %}selected{% endif %}>
+                Meeting
+            </option>
+
+            <option value="note"
+                {% if activity_type == "note" %}selected{% endif %}>
+                Note
+            </option>
+
+            <option value="followup"
+                {% if activity_type == "followup" %}selected{% endif %}>
+                Follow-up
+            </option>
+
+        </select>
+
+
+        <select
+            name="completed"
+            class="border rounded-lg px-4 py-3 bg-white"
+        >
+
+            <option value="">
+                All
+            </option>
+
+            <option value="yes"
+                {% if completed == "yes" %}selected{% endif %}>
+                Completed
+            </option>
+
+            <option value="no"
+                {% if completed == "no" %}selected{% endif %}>
+                Pending
+            </option>
+
+        </select>
+
+
+        <button
+            class="bg-gray-900 text-white px-6 rounded-lg"
+        >
+            Filter
+        </button>
+
+    </div>
+
+</form>
+
+
+<!-- Activities -->
+
+<div class="bg-white rounded-xl shadow-sm overflow-hidden">
+
+    <table class="w-full">
+
+        <thead class="bg-gray-50 border-b">
+
+            <tr>
+
+                <th class="text-left px-6 py-4">
+                    Customer
+                </th>
+
+                <th class="text-left px-6 py-4">
+                    Type
+                </th>
+
+                <th class="text-left px-6 py-4">
+                    Description
+                </th>
+
+                <th class="text-left px-6 py-4">
+                    Due
+                </th>
+
+                <th class="text-left px-6 py-4">
+                    Status
+                </th>
+
+                <th class="px-6 py-4">
+                </th>
+
+            </tr>
+
+        </thead>
+
+
+        <tbody class="divide-y">
+
+            {% for activity in activities %}
+
+            <tr class="hover:bg-gray-50">
+
+                <td class="px-6 py-4">
+
+                    {% if activity.lead %}
+
+    <a
+        href="{% url 'lead_detail' activity.lead.pk %}"
+        class="font-medium hover:underline"
+    >
+        {{ activity.lead.name }}
+    </a>
+
+{% elif activity.customer %}
+
+    <a
+        href="{% url 'customer_detail' activity.customer.pk %}"
+        class="font-medium hover:underline"
+    >
+        {{ activity.customer.name }}
+    </a>
+
+{% else %}
+
+    <span class="text-gray-400">
+        No contact
+    </span>
+
+{% endif %}
+
+                </td>
+
+
+                <td class="px-6 py-4">
+
+                    {{ activity.get_activity_type_display }}
+
+                </td>
+
+
+                <td class="px-6 py-4 text-gray-600">
+
+                    {{ activity.description|truncatechars:60 }}
+
+                </td>
+
+
+                <td class="px-6 py-4 text-gray-500">
+
+                    {% if activity.due_date %}
+                        {{ activity.due_date|date:"d M Y H:i" }}
+                    {% else %}
+                        -
+                    {% endif %}
+
+                </td>
+
+
+                <td class="px-6 py-4">
+
+                    {% if activity.completed %}
+
+                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+                            Completed
+                        </span>
+
+                    {% else %}
+
+                        <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
+                            Pending
+                        </span>
+
+                    {% endif %}
+
+                </td>
+
+
+                <td class="px-6 py-4">
+
+                    <div class="flex gap-3">
+
+                        <a
+                            href="{% url 'activity_edit' activity.pk %}"
+                            class="text-sm hover:underline"
+                        >
+                            Edit
+                        </a>
+
+                        <a
+                            href="{% url 'activity_delete' activity.pk %}"
+                            class="text-sm text-red-600 hover:underline"
+                        >
+                            Delete
+                        </a>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+            {% empty %}
+
+            <tr>
+
+                <td
+                    colspan="6"
+                    class="text-center py-12 text-gray-500"
+                >
+                    No activities found.
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

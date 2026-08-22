@@ -1,0 +1,203 @@
+{% extends "crm/base.html" %}
+
+{% block title %}Deals - SimpleCRM{% endblock %}
+
+{% block content %}
+
+<div class="flex justify-between items-center mb-8">
+
+    <div>
+        <h2 class="text-3xl font-bold">
+            Deals
+        </h2>
+
+        <p class="text-gray-500 mt-1">
+            Track sales opportunities
+        </p>
+    </div>
+
+    <a
+        href="{% url 'deal_create' %}"
+        class="bg-gray-900 text-white px-5 py-3 rounded-lg"
+    >
+        + Add Deal
+    </a>
+
+</div>
+
+
+<form method="GET" class="mb-6">
+
+    <div class="flex gap-3">
+
+        <input
+            type="text"
+            name="search"
+            value="{{ search }}"
+            placeholder="Search deals or customers..."
+            class="flex-1 border rounded-lg px-4 py-3 bg-white"
+        >
+
+        <select
+            name="stage"
+            class="border rounded-lg px-4 py-3 bg-white"
+        >
+
+            <option value="">
+                All Stages
+            </option>
+
+            <option value="proposal"
+                {% if stage == "proposal" %}selected{% endif %}>
+                Proposal
+            </option>
+
+            <option value="negotiation"
+                {% if stage == "negotiation" %}selected{% endif %}>
+                Negotiation
+            </option>
+
+            <option value="won"
+                {% if stage == "won" %}selected{% endif %}>
+                Won
+            </option>
+
+            <option value="lost"
+                {% if stage == "lost" %}selected{% endif %}>
+                Lost
+            </option>
+
+        </select>
+
+        <button
+            class="bg-gray-900 text-white px-6 rounded-lg"
+        >
+            Filter
+        </button>
+
+    </div>
+
+</form>
+
+
+<div class="bg-white rounded-xl shadow-sm overflow-hidden">
+
+    <table class="w-full">
+
+        <thead class="bg-gray-50 border-b">
+
+            <tr>
+
+                <th class="text-left px-6 py-4">
+                    Deal
+                </th>
+
+                <th class="text-left px-6 py-4">
+                    Customer
+                </th>
+
+                <th class="text-left px-6 py-4">
+                    Amount
+                </th>
+
+                <th class="text-left px-6 py-4">
+                    Stage
+                </th>
+
+                <th class="text-left px-6 py-4">
+                    Close Date
+                </th>
+
+            </tr>
+
+        </thead>
+
+        <tbody class="divide-y">
+
+            {% for deal in deals %}
+
+            <tr class="hover:bg-gray-50">
+
+                <td class="px-6 py-4">
+
+                    <a
+                        href="{% url 'deal_detail' deal.pk %}"
+                        class="font-medium hover:underline"
+                    >
+                        {{ deal.name }}
+                    </a>
+
+                </td>
+
+                <td class="px-6 py-4">
+                    {{ deal.customer.name }}
+                </td>
+
+                <td class="px-6 py-4 font-medium">
+                    ₹{{ deal.amount }}
+                </td>
+
+                <td class="px-6 py-4">
+
+                    {% if deal.stage == "won" %}
+
+                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
+                            Won
+                        </span>
+
+                    {% elif deal.stage == "lost" %}
+
+                        <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm">
+                            Lost
+                        </span>
+
+                    {% elif deal.stage == "negotiation" %}
+
+                        <span class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full text-sm">
+                            Negotiation
+                        </span>
+
+                    {% else %}
+
+                        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm">
+                            Proposal
+                        </span>
+
+                    {% endif %}
+
+                </td>
+
+                <td class="px-6 py-4 text-gray-500">
+
+                    {% if deal.expected_close_date %}
+                        {{ deal.expected_close_date|date:"d M Y" }}
+                    {% else %}
+                        -
+                    {% endif %}
+
+                </td>
+
+            </tr>
+
+            {% empty %}
+
+            <tr>
+
+                <td
+                    colspan="5"
+                    class="text-center py-12 text-gray-500"
+                >
+                    No deals found.
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+        </tbody>
+
+    </table>
+
+</div>
+
+{% endblock %}

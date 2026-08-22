@@ -1,0 +1,85 @@
+{% extends "crm/base.html" %}
+
+{% block title %}
+Login - SimpleCRM
+{% endblock %}
+
+{% block content %}
+
+<div class="min-h-screen flex items-center justify-center">
+
+    <div class="w-full max-w-md">
+
+        <div class="bg-white rounded-xl shadow-sm p-8">
+
+            <h1 class="text-2xl font-bold mb-2">
+                Welcome back
+            </h1>
+
+            <p class="text-gray-500 mb-8">
+                Login to SimpleCRM
+            </p>
+
+
+            {% if form.errors %}
+
+                <div class="bg-red-50 text-red-600 p-4 rounded-lg mb-6">
+                    Invalid username or password.
+                </div>
+
+            {% endif %}
+
+
+            <form method="POST">
+
+                {% csrf_token %}
+
+                <div class="mb-5">
+
+                    <label class="block mb-2 font-medium">
+                        Username
+                    </label>
+
+                    <input
+                        type="text"
+                        name="username"
+                        required
+                        autofocus
+                        class="w-full border rounded-lg px-4 py-3"
+                    >
+
+                </div>
+
+
+                <div class="mb-6">
+
+                    <label class="block mb-2 font-medium">
+                        Password
+                    </label>
+
+                    <input
+                        type="password"
+                        name="password"
+                        required
+                        class="w-full border rounded-lg px-4 py-3"
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="w-full bg-gray-900 text-white py-3 rounded-lg"
+                >
+                    Login
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

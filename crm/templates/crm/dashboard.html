@@ -1,0 +1,143 @@
+{% extends "crm/base.html" %}
+
+{% block title %}
+Dashboard - SimpleCRM
+{% endblock %}
+
+
+{% block content %}
+
+<div class="mb-8">
+
+    <h2 class="text-3xl font-bold">
+        Dashboard
+    </h2>
+
+    <p class="text-gray-500 mt-1">
+        Overview of your CRM
+    </p>
+
+</div>
+
+
+<!-- Statistics -->
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+
+    <!-- Customers -->
+
+    <div class="bg-white rounded-xl p-6 shadow-sm">
+
+        <p class="text-gray-500 text-sm">
+            Customers
+        </p>
+
+        <p class="text-3xl font-bold mt-2">
+            {{ customer_count }}
+        </p>
+
+    </div>
+
+
+    <!-- Leads -->
+
+    <div class="bg-white rounded-xl p-6 shadow-sm">
+
+        <p class="text-gray-500 text-sm">
+            Leads
+        </p>
+
+        <p class="text-3xl font-bold mt-2">
+            {{ lead_count }}
+        </p>
+
+    </div>
+
+
+    <!-- Open Deals -->
+
+    <div class="bg-white rounded-xl p-6 shadow-sm">
+
+        <p class="text-gray-500 text-sm">
+            Open Deals
+        </p>
+
+        <p class="text-3xl font-bold mt-2">
+            {{ open_deals }}
+        </p>
+
+    </div>
+
+
+    <!-- Revenue -->
+
+    <div class="bg-white rounded-xl p-6 shadow-sm">
+
+        <p class="text-gray-500 text-sm">
+            Won Revenue
+        </p>
+
+        <p class="text-3xl font-bold mt-2">
+            ₹{{ total_revenue }}
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- Recent Activities -->
+
+<div class="mt-8 bg-white rounded-xl shadow-sm">
+
+    <div class="p-6 border-b">
+
+        <h3 class="text-xl font-semibold">
+            Recent Activities
+        </h3>
+
+    </div>
+
+
+    {% if recent_activities %}
+
+        <div class="divide-y">
+
+            {% for activity in recent_activities %}
+
+                <div class="p-6 flex justify-between">
+
+                    <div>
+
+                        <p class="font-medium">
+                            {{ activity.customer.name }}
+                        </p>
+
+                        <p class="text-gray-500 text-sm mt-1">
+                            {{ activity.description }}
+                        </p>
+
+                    </div>
+
+                    <span class="text-sm text-gray-400">
+                        {{ activity.activity_type }}
+                    </span>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="p-6 text-gray-500">
+            No activities yet.
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

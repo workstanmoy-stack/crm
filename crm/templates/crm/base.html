@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}CRM{% endblock %}</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 text-gray-900">
+
+    <div class="flex min-h-screen">
+
+        <!-- Sidebar -->
+
+        <aside class="w-64 bg-gray-900 text-white p-6">
+
+            <h1 class="text-2xl font-bold mb-8">
+                SimpleCRM
+            </h1>
+
+            <nav class="space-y-2">
+
+                <a href="{% url 'dashboard' %}"
+                   class="block px-4 py-3 rounded-lg hover:bg-gray-800">
+                    Dashboard
+                </a>
+
+                <a href="{% url 'customer_list' %}"
+                    class="block px-4 py-3 rounded-lg hover:bg-gray-800">
+                        Customers
+                </a>
+
+                <a
+    href="{% url 'lead_list' %}"
+    class="block px-4 py-3 rounded-lg hover:bg-gray-800"
+>
+    Leads
+</a>
+
+                <a
+    href="{% url 'deal_list' %}"
+    class="block px-4 py-3 rounded-lg hover:bg-gray-800"
+>
+    Deals
+</a>
+
+                <a
+    href="{% url 'activity_list' %}"
+    class="block px-4 py-3 rounded-lg hover:bg-gray-800"
+>
+    Activities
+</a>
+<div class="mt-auto pt-8 border-t border-gray-700">
+
+    <p class="text-sm text-gray-400">
+        Logged in as
+    </p>
+
+    <p class="font-medium mt-1">
+        {{ request.user.username }}
+    </p>
+
+    <form
+        method="POST"
+        action="{% url 'logout' %}"
+        class="mt-4"
+    >
+
+        {% csrf_token %}
+
+        <button
+            type="submit"
+            class="text-sm text-gray-400 hover:text-white"
+        >
+            Logout
+        </button>
+
+    </form>
+
+</div>
+
+            </nav>
+
+        </aside>
+
+
+        <!-- Main content -->
+
+        <main class="flex-1 p-8">
+
+            {% block content %}
+            {% endblock %}
+
+        </main>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,116 @@
+{% extends "crm/base.html" %}
+
+{% block title %}{{ customer.name }} - SimpleCRM{% endblock %}
+
+
+{% block content %}
+
+<div class="flex justify-between items-center mb-8">
+
+    <div>
+
+        <h2 class="text-3xl font-bold">
+            {{ customer.name }}
+        </h2>
+
+        <p class="text-gray-500">
+            {{ customer.company|default:"No company" }}
+        </p>
+
+    </div>
+
+
+    <div class="flex gap-3">
+
+        <a
+            href="{% url 'customer_edit' customer.pk %}"
+            class="bg-gray-900 text-white px-5 py-3 rounded-lg"
+        >
+            Edit
+        </a>
+
+        <a
+            href="{% url 'customer_delete' customer.pk %}"
+            class="border border-red-300 text-red-600 px-5 py-3 rounded-lg"
+        >
+            Delete
+        </a>
+
+    </div>
+
+</div>
+
+
+<div class="bg-white rounded-xl shadow-sm p-8">
+
+    <div class="grid md:grid-cols-2 gap-8">
+
+        <div>
+
+            <p class="text-sm text-gray-500">
+                Email
+            </p>
+
+            <p class="font-medium mt-1">
+                {{ customer.email|default:"-" }}
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <p class="text-sm text-gray-500">
+                Phone
+            </p>
+
+            <p class="font-medium mt-1">
+                {{ customer.phone|default:"-" }}
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <p class="text-sm text-gray-500">
+                Status
+            </p>
+
+            <p class="font-medium mt-1">
+                {{ customer.get_status_display }}
+            </p>
+
+        </div>
+
+
+        <div>
+
+            <p class="text-sm text-gray-500">
+                Created
+            </p>
+
+            <p class="font-medium mt-1">
+                {{ customer.created_at|date:"d M Y" }}
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="mt-8 pt-8 border-t">
+
+        <p class="text-sm text-gray-500">
+            Notes
+        </p>
+
+        <p class="mt-2 whitespace-pre-line">
+            {{ customer.notes|default:"No notes." }}
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}

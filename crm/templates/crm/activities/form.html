@@ -1,0 +1,237 @@
+{% extends "crm/base.html" %}
+
+{% block title %}
+{% if activity %}Edit Activity{% else %}Add Activity{% endif %}
+{% endblock %}
+
+{% block content %}
+
+<div class="max-w-2xl">
+
+    <h2 class="text-3xl font-bold mb-8">
+
+        {% if activity %}
+            Edit Activity
+        {% else %}
+            Add Activity
+        {% endif %}
+
+    </h2>
+
+
+    <form method="POST" class="bg-white p-8 rounded-xl shadow-sm">
+
+        {% csrf_token %}
+
+        <div class="space-y-6">
+
+
+            <!-- Lead -->
+
+            <div>
+
+                <label class="block mb-2 font-medium">
+                    Lead
+                </label>
+
+                <select
+                    name="lead"
+                    class="w-full border rounded-lg px-4 py-3"
+                >
+
+                    <option value="">
+                        No Lead
+                    </option>
+
+                    {% for lead in leads %}
+
+                    <option
+                        value="{{ lead.id }}"
+                        {% if activity.lead_id == lead.id %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ lead.name }}
+                        {% if lead.company %}
+                            — {{ lead.company }}
+                        {% endif %}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+                <p class="text-sm text-gray-500 mt-2">
+                    Use this when the person is still a lead.
+                </p>
+
+            </div>
+
+
+            <!-- Customer -->
+
+            <div>
+
+                <label class="block mb-2 font-medium">
+                    Customer
+                </label>
+
+                <select
+                    name="customer"
+                    class="w-full border rounded-lg px-4 py-3"
+                >
+
+                    <option value="">
+                        No Customer
+                    </option>
+
+                    {% for customer in customers %}
+
+                    <option
+                        value="{{ customer.id }}"
+                        {% if activity.customer_id == customer.id %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ customer.name }}
+                        {% if customer.company %}
+                            — {{ customer.company }}
+                        {% endif %}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+                <p class="text-sm text-gray-500 mt-2">
+                    Use this after the lead becomes a customer.
+                </p>
+
+            </div>
+
+
+            <!-- Activity type -->
+
+            <div>
+
+                <label class="block mb-2 font-medium">
+                    Activity Type
+                </label>
+
+                <select
+                    name="activity_type"
+                    class="w-full border rounded-lg px-4 py-3"
+                >
+
+                    <option value="call"
+                        {% if activity.activity_type == "call" or not activity %}
+                            selected
+                        {% endif %}>
+                        Call
+                    </option>
+
+                    <option value="meeting"
+                        {% if activity.activity_type == "meeting" %}selected{% endif %}>
+                        Meeting
+                    </option>
+
+                    <option value="note"
+                        {% if activity.activity_type == "note" %}selected{% endif %}>
+                        Note
+                    </option>
+
+                    <option value="followup"
+                        {% if activity.activity_type == "followup" %}selected{% endif %}>
+                        Follow-up
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Description -->
+
+            <div>
+
+                <label class="block mb-2 font-medium">
+                    Description
+                </label>
+
+                <textarea
+                    name="description"
+                    required
+                    rows="5"
+                    placeholder="Discussed project requirements..."
+                    class="w-full border rounded-lg px-4 py-3"
+                >{{ activity.description|default:'' }}</textarea>
+
+            </div>
+
+
+            <!-- Due date -->
+
+            <div>
+
+                <label class="block mb-2 font-medium">
+                    Due Date
+                </label>
+
+                <input
+                    type="datetime-local"
+                    name="due_date"
+                    value="{{ activity.due_date|date:'Y-m-d\TH:i' }}"
+                    class="w-full border rounded-lg px-4 py-3"
+                >
+
+            </div>
+
+
+            <!-- Completed -->
+
+            <div class="flex items-center gap-3">
+
+                <input
+                    type="checkbox"
+                    name="completed"
+                    id="completed"
+                    {% if activity.completed %}checked{% endif %}
+                    class="w-4 h-4"
+                >
+
+                <label for="completed">
+                    Mark as completed
+                </label>
+
+            </div>
+
+
+            <div class="flex gap-3">
+
+                <button
+                    type="submit"
+                    class="bg-gray-900 text-white px-6 py-3 rounded-lg"
+                >
+                    {% if activity %}
+                        Save Changes
+                    {% else %}
+                        Create Activity
+                    {% endif %}
+                </button>
+
+                <a
+                    href="{% url 'activity_list' %}"
+                    class="border px-6 py-3 rounded-lg"
+                >
+                    Cancel
+                </a>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
