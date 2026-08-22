@@ -1,8 +1,4 @@
-Absolutely. Since this is going on GitHub as a **portfolio project**, the README should do more than list features. It should explain **what the CRM is, why it exists, who uses it, how the business process works, how users interact with it, the data relationships, permissions, and how to run it**.
 
-Replace your current `README.md` with this:
-
-````markdown
 # SimpleCRM
 
 A simple multi-user Customer Relationship Management (CRM) system built with Django.
